@@ -1,4 +1,4 @@
-import type { BannerItem, CategoryItem } from "@/types/home"
+import type { BannerItem, CategoryItem, HotItem } from "@/types/home"
 import { http } from "@/utils/http"
 
 
@@ -16,5 +16,12 @@ export const getHomeCategory = () => {
   return http<CategoryItem[]>({
     method: 'GET',
     url: '/home/category/mutli',
+  })
+}
+
+export const getHotList = () => {
+  return http<HotItem[]>({
+    method: 'GET',
+    url: '/home/hot/mutli',
   })
 }
