@@ -25,3 +25,10 @@ export const getHotList = () => {
     url: '/home/hot/mutli',
   })
 }
+
+export const getHomeGoodsGuessLike = () => {
+  return http({
+    method: 'GET',
+    url: '/home/goods/guessLike'
+  })
+}
