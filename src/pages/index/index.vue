@@ -2,7 +2,7 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import type { BannerItem } from '@/types/home'
-import { getHomeBanner } from '@/services/home'
+import { getHomeBanner, getHomeCategory } from '@/services/home'
 import CustomNavbar from './components/CustomNavbar.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 
@@ -13,8 +13,14 @@ const getHomeBannerData = async () => {
   bannerList.value = res.result
 }
 
+const getHomeCategoryData = async () => {
+  const res = await getHomeCategory()
+  console.log('res000', res)
+}
+
 onLoad(() => {
   getHomeBannerData()
+  getHomeCategoryData()
 })
 </script>
 

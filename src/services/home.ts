@@ -11,3 +11,10 @@ export const getHomeBanner = (distributionSite = 1) => {
     }
   })
 }
+
+export const getHomeCategory = () => {
+  return http({
+    method: 'GET',
+    url: '/home/category/mutli',
+  })
+}
