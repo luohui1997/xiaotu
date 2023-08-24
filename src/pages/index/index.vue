@@ -6,6 +6,7 @@ import { getHomeBanner, getHomeCategory, getHotList } from '@/services/home'
 import CustomNavbar from './components/CustomNavbar.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import hotPanel from './components/hotPanel.vue'
+import type { XtxGuessInstance } from '@/types/components'
 
 const bannerList = ref<BannerItem[]>([])
 
@@ -31,15 +32,22 @@ onLoad(() => {
   getHomeCategoryData()
   getHomeHotData()
 })
+
+const guessRef = ref<XtxGuessInstance>()
+
+const onScrollToLower = () => {
+  console.log('已经触底啦~')
+  guessRef.value?.getMore()
+}
 </script>
 
 <template>
   <CustomNavbar />
-  <scroll-view scroll-y class="scroll-view">
+  <scroll-view scroll-y class="scroll-view" @scrolltolower="onScrollToLower">
     <XtxSwiper :list="bannerList" />
     <CategoryPanel :list="categoryList" />
     <hotPanel :list="hotList" />
-    <XtxGuess />
+    <XtxGuess ref="guessRef" />
   </scroll-view>
 </template>
 
