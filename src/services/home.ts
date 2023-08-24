@@ -1,4 +1,4 @@
-import type { PageResult } from "@/types/global"
+import type { PageParams, PageResult } from "@/types/global"
 import type { BannerItem, CategoryItem, GuessItem, HotItem } from "@/types/home"
 import { http } from "@/utils/http"
 
@@ -8,8 +8,8 @@ export const getHomeBanner = (distributionSite = 1) => {
     method: 'GET',
     url: '/home/banner',
     data: {
-      distributionSite
-    }
+      distributionSite,
+    },
   })
 }
 
@@ -27,9 +27,10 @@ export const getHotList = () => {
   })
 }
 
-export const getHomeGoodsGuessLike = () => {
+export const getHomeGoodsGuessLike = (data?: PageParams) => {
   return http<PageResult<GuessItem>>({
     method: 'GET',
-    url: '/home/goods/guessLike'
+    url: '/home/goods/guessLike',
+    data,
   })
 }
