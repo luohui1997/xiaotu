@@ -36,7 +36,6 @@ onLoad(() => {
 const guessRef = ref<XtxGuessInstance>()
 
 const onScrollToLower = () => {
-  console.log('已经触底啦~')
   guessRef.value?.getMore()
 }
 </script>

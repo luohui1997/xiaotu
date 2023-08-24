@@ -8,7 +8,6 @@ const getData = async () => {
     method: 'GET',
     url: '',
   })
-  console.log('请求成功res', res.result)
 }
 </script>
 

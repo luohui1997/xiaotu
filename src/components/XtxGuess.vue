@@ -6,14 +6,23 @@ import type { PageParams } from '@/types/global'
 
 const guessItemList = ref<GuessItem[]>([])
 const pageParams: Required<PageParams> = {
-  page: 1,
+  page: 30,
   pageSize: 10,
 }
+const finish = ref(false)
 const getHomeGoodsGuessLikeData = async () => {
+  if (finish.value) {
+    uni.showToast({ icon: 'none', title: '没有更多数据~' })
+    return
+  }
   const res = await getHomeGoodsGuessLike(pageParams)
 
   guessItemList.value.push(...res.result.items)
-  pageParams.page++
+  if (pageParams.page < res.result.pages) {
+    pageParams.page++
+  } else {
+    finish.value = true
+  }
 }
 
 onMounted(() => {
@@ -45,7 +54,7 @@ defineExpose({
       </view>
     </navigator>
   </view>
-  <view class="loading-text"> 正在加载... </view>
+  <view class="loading-text"> {{ finish ? '没有更多数据~' : '正在加载...' }} </view>
 </template>
 
 <style lang="scss">
