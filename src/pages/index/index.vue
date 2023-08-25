@@ -42,7 +42,13 @@ const onScrollToLower = () => {
 const isTrigger = ref(false)
 const onRefresherrefresh = async () => {
   isTrigger.value = true
-  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()])
+  guessRef.value?.resetData()
+  await Promise.all([
+    getHomeBannerData(),
+    getHomeCategoryData(),
+    getHomeHotData(),
+    guessRef.value?.getMore(),
+  ])
   isTrigger.value = false
 }
 </script>

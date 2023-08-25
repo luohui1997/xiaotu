@@ -6,7 +6,7 @@ import type { PageParams } from '@/types/global'
 
 const guessItemList = ref<GuessItem[]>([])
 const pageParams: Required<PageParams> = {
-  page: 30,
+  page: 1,
   pageSize: 10,
 }
 const finish = ref(false)
@@ -25,12 +25,19 @@ const getHomeGoodsGuessLikeData = async () => {
   }
 }
 
+const resetData = () => {
+  pageParams.page = 1
+  guessItemList.value = []
+  finish.value = false
+}
+
 onMounted(() => {
   getHomeGoodsGuessLikeData()
 })
 
 defineExpose({
   getMore: getHomeGoodsGuessLikeData,
+  resetData,
 })
 </script>
 
