@@ -38,11 +38,25 @@ const guessRef = ref<XtxGuessInstance>()
 const onScrollToLower = () => {
   guessRef.value?.getMore()
 }
+
+const isTrigger = ref(false)
+const onRefresherrefresh = async () => {
+  isTrigger.value = true
+  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()])
+  isTrigger.value = false
+}
 </script>
 
 <template>
   <CustomNavbar />
-  <scroll-view scroll-y class="scroll-view" @scrolltolower="onScrollToLower">
+  <scroll-view
+    refresher-enabled
+    @refresherrefresh="onRefresherrefresh"
+    :refresher-triggered="isTrigger"
+    scroll-y
+    class="scroll-view"
+    @scrolltolower="onScrollToLower"
+  >
     <XtxSwiper :list="bannerList" />
     <CategoryPanel :list="categoryList" />
     <hotPanel :list="hotList" />
