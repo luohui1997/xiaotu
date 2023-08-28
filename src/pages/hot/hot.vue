@@ -34,6 +34,20 @@ const getHotRecommendData = async () => {
 onLoad(() => {
   getHotRecommendData()
 })
+
+// 滚动触底
+const onScrollToLower = async () => {
+  const currSubType = subTypes.value[activeIndex.value]
+  currSubType.goodsItems.page++
+  const res = await getHotRecommendAPI(currUrlMap!.url, {
+    subType: currSubType.id,
+    page: currSubType.goodsItems.page,
+    pageSize: currSubType.goodsItems.pageSize,
+  })
+  const newSubtypes = res.result.subTypes[activeIndex.value]
+  currSubType.goodsItems.items.push(...newSubtypes.goodsItems.items)
+  console.log(currSubType)
+}
 </script>
 
 <template>
@@ -60,6 +74,7 @@ onLoad(() => {
       v-show="activeIndex === index"
       scroll-y
       class="scroll-view"
+      @scrolltolower="onScrollToLower"
     >
       <view class="goods">
         <navigator
