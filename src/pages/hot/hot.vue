@@ -22,11 +22,14 @@ uni.setNavigationBarTitle({ title: currUrlMap!.title })
 // 推荐图
 const bannerPicture = ref('')
 // 推荐选项
-const subTypes = ref<SubTypeItem[]>([])
+const subTypes = ref<(SubTypeItem & { finish?: boolean })[]>([])
 // 当前活跃下标
 const activeIndex = ref(0)
 const getHotRecommendData = async () => {
-  const res = await getHotRecommendAPI(currUrlMap!.url)
+  const res = await getHotRecommendAPI(currUrlMap!.url, {
+    page: import.meta.env.DEV ? 30 : 1,
+    pageSize: 10,
+  })
   bannerPicture.value = res.result.bannerPicture
   subTypes.value = res.result.subTypes
 }
@@ -38,7 +41,17 @@ onLoad(() => {
 // 滚动触底
 const onScrollToLower = async () => {
   const currSubType = subTypes.value[activeIndex.value]
-  currSubType.goodsItems.page++
+
+  // 当前页码小于页总数
+  if (currSubType.goodsItems.page < currSubType.goodsItems.pages) {
+    currSubType.goodsItems.page++
+  } else {
+    // 结束标记
+    currSubType.finish = true
+    // 结束提示
+    return uni.showToast({ icon: 'none', title: '没有更多数据了~' })
+  }
+
   const res = await getHotRecommendAPI(currUrlMap!.url, {
     subType: currSubType.id,
     page: currSubType.goodsItems.page,
@@ -46,7 +59,6 @@ const onScrollToLower = async () => {
   })
   const newSubtypes = res.result.subTypes[activeIndex.value]
   currSubType.goodsItems.items.push(...newSubtypes.goodsItems.items)
-  console.log(currSubType)
 }
 </script>
 
@@ -92,7 +104,7 @@ const onScrollToLower = async () => {
           </view>
         </navigator>
       </view>
-      <view class="loading-text">正在加载...</view>
+      <view class="loading-text">{{ item.finish ? '没有更多数据了~' : '正在加载...' }}</view>
     </scroll-view>
   </view>
 </template>
